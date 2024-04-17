@@ -1,4 +1,4 @@
-package subject_models
+git package subject_models
 
 import (
 	"lms_backend/database"

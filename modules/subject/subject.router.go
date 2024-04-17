@@ -16,11 +16,11 @@ func SetRoutes(app *fiber.App) {
 	subjectApi.Put("", subjectHandler.Update)
 	subjectApi.Delete("", subjectHandler.Delete)
 
-	// var taskHandler subject_handlers.TaskHandler
+	var taskHandler subject_handlers.TaskHandler
 
-	// taskApi := app.Group("task")
-	// taskApi.Get("", taskHandler.List)
-	// taskApi.Post("", taskHandler.Create)
-	// taskApi.Put("", taskHandler.Update)
-	// taskApi.Delete("", taskHandler.Delete)
+	taskApi := app.Group("task")
+	taskApi.Get("", taskHandler.List)
+	taskApi.Post("", taskHandler.Create)
+	taskApi.Put("", taskHandler.Update)
+	taskApi.Delete("", taskHandler.Delete)
 }

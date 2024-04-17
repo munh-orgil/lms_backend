@@ -1,6 +1,7 @@
 package subject_models
 
 import (
+	"fmt"
 	"lms_backend/database"
 
 	"github.com/craftzbay/go_grc/v2/data"
@@ -8,18 +9,20 @@ import (
 )
 
 type Task struct {
-	Id        uint           `json:"id" gorm:"primaryKey"`
-	Title     string         `json:"title"`
-	SubjectId uint           `json:"-"`
-	Subject   Subject        `json:"subject" gorm:"SubjectId"`
-	Score     float64        `json:"score"`
-	Due       data.LocalTime `json:"due"`
+	Id          uint           `json:"id" gorm:"primaryKey"`
+	Title       string         `json:"title"`
+	Description string         `json:"description"`
+	SubjectId   uint           `json:"-"`
+	Subject     Subject        `json:"subject" gorm:"SubjectId"`
+	Score       float64        `json:"score"`
+	Due         data.LocalTime `json:"due"`
 }
 
 func TaskList(c *fiber.Ctx) (res []Task, err error) {
 	db := database.DBconn
 	tx := db.Model(Task{})
-	err = tx.Find(&res).Error
+	err = tx.Order("due DESC").Preload("Subject").Find(&res).Error
+	fmt.Printf("res: %v\n", res)
 	return
 }
 
