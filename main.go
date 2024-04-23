@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"lms_backend/database"
 	"lms_backend/fiber_server"
 	"lms_backend/global"
@@ -24,7 +23,6 @@ func main() {
 	flag.Parse()
 
 	if *migrate {
-		fmt.Printf("\"here\": %v\n", "here")
 		RunMigrations()
 	}
 

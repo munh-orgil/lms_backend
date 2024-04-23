@@ -20,7 +20,11 @@ type Task struct {
 
 func TaskList(c *fiber.Ctx) (res []Task, err error) {
 	db := database.DBconn
+	subjectId := c.QueryInt("subject_id")
 	tx := db.Model(Task{})
+	if subjectId > 0 {
+		tx.Where("subject_id = ?", subjectId)
+	}
 	err = tx.Order("due DESC").Preload("Subject").Find(&res).Error
 	fmt.Printf("res: %v\n", res)
 	return

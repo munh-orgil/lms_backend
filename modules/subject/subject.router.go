@@ -10,15 +10,15 @@ import (
 func SetRoutes(app *fiber.App) {
 	var subjectHandler subject_handlers.SubjectHandler
 
-	subjectApi := app.Group("subject", session.TokenMiddleware)
-	subjectApi.Get("", subjectHandler.List)
-	subjectApi.Post("", subjectHandler.Create)
-	subjectApi.Put("", subjectHandler.Update)
-	subjectApi.Delete("", subjectHandler.Delete)
+	subjectApi := app.Group("subject")
+	subjectApi.Get("", session.TokenMiddleware, subjectHandler.List)
+	subjectApi.Post("", session.TokenMiddleware, subjectHandler.Create)
+	subjectApi.Put("", session.TokenMiddleware, subjectHandler.Update)
+	subjectApi.Delete("", session.TokenMiddleware, subjectHandler.Delete)
 
 	var taskHandler subject_handlers.TaskHandler
 
-	taskApi := app.Group("task")
+	taskApi := app.Group("task", session.TokenMiddleware)
 	taskApi.Get("", taskHandler.List)
 	taskApi.Post("", taskHandler.Create)
 	taskApi.Put("", taskHandler.Update)
