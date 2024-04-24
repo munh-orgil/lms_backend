@@ -23,4 +23,9 @@ func SetRoutes(app *fiber.App) {
 	taskApi.Post("", taskHandler.Create)
 	taskApi.Put("", taskHandler.Update)
 	taskApi.Delete("", taskHandler.Delete)
+
+	var studentHandler subject_handlers.StudentHandler
+
+	studentApi := app.Group("student", session.TokenMiddleware)
+	studentApi.Get("subject", studentHandler.StudentSubject)
 }

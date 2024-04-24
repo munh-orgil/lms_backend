@@ -35,12 +35,18 @@ type StudentTask struct {
 func GetSubject(studentId, subjectId uint) (res *StudentSubject, err error) {
 	db := database.DBconn
 
-	if err = db.Where("student_id = ?", studentId).Where("subject_id = ?", subjectId).First(&res).Error; err != nil {
+	if err = db.Where("student_id = ?", studentId).Where("subject_id = ?", subjectId).
+		Preload("Subject").Preload("Subject.Lectures").First(&res).Error; err != nil {
+		return
+	}
+
+	subjectTaskIds := make([]uint, 0)
+	if err = db.Model(Task{}).Where("subject_id = ?", subjectId).Select("id").Scan(&subjectTaskIds).Error; err != nil {
 		return
 	}
 
 	studentTasks := make([]StudentTask, 0)
-	if err = db.Where("student_id = ?", studentId).Where("subject_id = ?", subjectId).Preload("Task").Find(&studentTasks).Error; err != nil {
+	if err = db.Where("student_id = ?", studentId).Where("task_id IN ?", subjectTaskIds).Preload("Task").Find(&studentTasks).Error; err != nil {
 		return
 	}
 	doneTaskIds := make([]uint, 0)
@@ -49,7 +55,7 @@ func GetSubject(studentId, subjectId uint) (res *StudentSubject, err error) {
 	}
 
 	tasks := make([]Task, 0)
-	if err = db.Where("subject_id = ?", subjectId).Where("task_id NOT IN ?", doneTaskIds).Find(&tasks).Error; err != nil {
+	if err = db.Where("subject_id = ?", subjectId).Where("id NOT IN ?", doneTaskIds).Find(&tasks).Error; err != nil {
 		return
 	}
 

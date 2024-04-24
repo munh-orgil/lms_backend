@@ -1,8 +1,8 @@
 package subject_models
 
 import (
-	"fmt"
 	"lms_backend/database"
+	"lms_backend/session"
 
 	"github.com/craftzbay/go_grc/v2/data"
 	"github.com/gofiber/fiber/v2"
@@ -22,11 +22,19 @@ func TaskList(c *fiber.Ctx) (res []Task, err error) {
 	db := database.DBconn
 	subjectId := c.QueryInt("subject_id")
 	tx := db.Model(Task{})
+	studentId := session.GetTokenInfo(c).GetUserId()
+	doneTaskIds := []uint{}
+
+	if err = db.Model(StudentTask{}).Distinct("task_id").Where("student_id = ?", studentId).Scan(&doneTaskIds).Error; err != nil {
+		return
+	}
+	if len(doneTaskIds) > 0 {
+		tx.Where("id not in ?", doneTaskIds)
+	}
 	if subjectId > 0 {
 		tx.Where("subject_id = ?", subjectId)
 	}
 	err = tx.Order("due DESC").Preload("Subject").Find(&res).Error
-	fmt.Printf("res: %v\n", res)
 	return
 }
 
