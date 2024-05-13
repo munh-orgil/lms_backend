@@ -1,7 +1,6 @@
 package file
 
 import (
-	"fmt"
 	"io"
 	"mime/multipart"
 	"os"
@@ -27,9 +26,9 @@ func UploadFile(fileHeader *multipart.FileHeader, c *fiber.Ctx) (string, error) 
 	if err != nil {
 		return "", err
 	}
-	if !isFileAllowed(fileBytes) {
-		return "", fmt.Errorf(DISALLOWED_FILE_SIZE)
-	}
+	// if !isFileAllowed(fileBytes) {
+	// 	return "", fmt.Errorf(DISALLOWED_FILE_SIZE)
+	// }
 
 	ufile := strings.Split(fileHeader.Filename, ".")
 	uuidWithHyphen := uuid.New()

@@ -250,3 +250,12 @@ func IsNumber(s string) bool {
 	}
 	return true
 }
+
+func Find[T any](item T, list []T, cmp func(a, b T) bool) *T {
+	for _, elem := range list {
+		if cmp(item, elem) {
+			return &elem
+		}
+	}
+	return nil
+}
