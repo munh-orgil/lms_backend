@@ -2,7 +2,7 @@ package subject
 
 import (
 	"lms_backend/database"
-	subject_models "lms_backend/modules/subject/models"
+	schedule_models "lms_backend/modules/schedule/models"
 )
 
 func RunMigrations() {
@@ -13,5 +13,6 @@ func RunMigrations() {
 	// db.AutoMigrate(subject_models.StudentSubject{})
 	// db.AutoMigrate(subject_models.StudentTask{})
 	// db.AutoMigrate(subject_models.Lecture{})
-	db.AutoMigrate(subject_models.Exam{})
+	// db.AutoMigrate(subject_models.Exam{})
+	db.AutoMigrate(schedule_models.Schedule{})
 }

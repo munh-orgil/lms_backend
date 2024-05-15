@@ -3,6 +3,7 @@ package fiber_server
 import (
 	"lms_backend/modules/auth"
 	"lms_backend/modules/file"
+	"lms_backend/modules/schedule"
 	"lms_backend/modules/subject"
 	"lms_backend/modules/user"
 
@@ -14,4 +15,5 @@ func InitRoutes(app *fiber.App) {
 	file.SetRoutes(app)
 	user.SetRoutes(app)
 	subject.SetRoutes(app)
+	schedule.SetRoutes(app)
 }
